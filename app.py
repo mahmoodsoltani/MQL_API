@@ -27,6 +27,21 @@ def get_item(item_id):
         return jsonify(item)
     else:
         return jsonify({"error": "Item not found"}), 404
+@app.route('/api/candle', methods=['POST'])
+def calculate_mean():
+    data = request.get_json()  # Get data as JSON
+    try:
+        # Extract OHLC values from the received data
+        high = data['high']
+        low = data['low']
+
+        # Calculate the mean of High and Low
+        mean_value = (high + low) / 2
+
+        # Return the result in JSON format
+        return jsonify({"mean": mean_value}), 200
+    except KeyError:
+        return jsonify({"error": "Invalid data format. 'high' and 'low' are required."}), 400
 
 # Run the app
 if __name__ == '__main__':
